@@ -194,7 +194,7 @@ map.on('click', function (e) {
     var mly;
     coords = JSON.stringify(e.lngLat);
     console.log(coords);
-    url3 = "https://a.mapillary.com/v2/search/im/close?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&distance=1000&limit=1&lat=" + e.lngLat.lat + "&lon=" + e.lngLat.lng
+    url3 = "https://a.mapillary.com/v2/search/im/close?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&distance=100&limit=1&lat=" + e.lngLat.lat + "&lon=" + e.lngLat.lng
     console.log(url3);
     $.ajax({
       type: "get",
@@ -206,7 +206,7 @@ map.on('click', function (e) {
         console.log(mlypos);
         var mlon = data.ims[0].lon;
         var mlat = data.ims[0].lat;
-        
+
         map.flyTo({
             center: [mlon, mlat],
             zoom: 15,
