@@ -20,6 +20,10 @@
 </script>
 <script language="JavaScript" type="Text/JavaScript">
 processButton = function() {
+  map.flyTo({
+    center: [28.2336, -29.6100],
+    zoom: 7
+  });
   map.removeLayer("mapillary");
   map.removeSource("mapillary");
   var user = document.getElementById("user").value;
@@ -187,6 +191,7 @@ map.on('load', function () {
   map.addControl(nav);
 });
 map.on('click', function (e) {
+    var mly;
     coords = JSON.stringify(e.lngLat);
     console.log(coords);
     url3 = "https://a.mapillary.com/v2/search/im/close?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&distance=1000&limit=1&lat=" + e.lngLat.lat + "&lon=" + e.lngLat.lng
@@ -201,31 +206,12 @@ map.on('click', function (e) {
         console.log(mlypos);
         var mlon = data.ims[0].lon;
         var mlat = data.ims[0].lat;
-        var markerSource = {
-                 type: 'geojson',
-                 data: {
-                     type: 'Feature',
-                     geometry: {
-                         type: 'Point',
-                         coordinates: [mlon, mlat]
-                     },
-                     properties: {
-                         title: 'You\'re here!',
-                         'marker-symbol': 'marker'
-                     }
-                 }
-             };
-        map.addSource('markers', markerSource)
-        map.addLayer({
-                      id: 'markers',
-                      type: 'symbol',
-                      source: 'markers',
-                      });
+        
         map.flyTo({
             center: [mlon, mlat],
             zoom: 15,
         });
-        var mly = new Mapillary.Viewer('mly',
+        mly = new Mapillary.Viewer('mly',
           'UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh',  // ClientID for user chrisbeddow
           mlypos, {cover: true, cache: false, direction: true});
       }
