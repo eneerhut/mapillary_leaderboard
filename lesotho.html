@@ -5,11 +5,11 @@
 <title>Mapillary Leaderboard Builder</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://npmcdn.com/mapillary-js@1.4.1/dist/mapillary-js.min.js"></script>
-<link href="https://npmcdn.com/mapillary-js@1.4.1/dist/mapillary-js.min.css" rel="stylesheet">
+<script src='https://unpkg.com/mapillary-js@1.7.2/dist/mapillary-js.min.js'></script>
+<link href='https://unpkg.com/mapillary-js@1.7.2/dist/mapillary-js.min.css' rel='stylesheet' />
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.24.0/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.24.0/mapbox-gl.css' rel='stylesheet' />
 
@@ -106,7 +106,17 @@ body {
 }
 
 #input, #output {
-  color: #fff
+  color: #fff;
+  z-index: 1;
+}
+#mly {
+  z-index: 0;
+  text-align: center;
+  align-items: center;
+}
+
+#output {
+  text-align: center;
 }
 
 #map {
@@ -116,32 +126,30 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1;
 }
 
 </style>
 </head>
 
 <body>
-<div id="left">
-  <div id="input">
+<div id="left" width=40%>
+  <div id="input" width=40%>
     <form>
     Enter username:&nbsp<input id="user" type="text"><br>
     Enter start date: &nbsp<input class="datepicker" type="text" id="start" /><br>
     Enter end date:&nbsp &nbsp<input class="datepicker" type="text" id="finish"/></br>
     </form>
     <input type="submit" onclick="processButton();" /><br>
-  </div>
-  <div id="output"></div>
-  <div id="mly">
+  </div><br>
+  <div id="output" style='width: 45%; height: 50px;'> </div>
+  <div id="mly" style='width: 45%; height: 400px;'>
     <script>
-    var mly = new Mapillary.Viewer('mly',
-        'UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh',  // ClientID for user chrisbeddow
-        'KXPQhn74azgtjJYcrGK-Fw', {cover: true, cache: false, direction: false});
+
     </script>
   </div>
 </div>
-<div id="map"></div>
+<div id="map" width=55%></div>
 
 
 <script>
@@ -177,6 +185,52 @@ map.on('load', function () {
   });
   var nav = new mapboxgl.Navigation({position: 'top-left'}); // position is optional
   map.addControl(nav);
+});
+map.on('click', function (e) {
+    coords = JSON.stringify(e.lngLat);
+    console.log(coords);
+    url3 = "https://a.mapillary.com/v2/search/im/close?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&distance=1000&limit=1&lat=" + e.lngLat.lat + "&lon=" + e.lngLat.lng
+    console.log(url3);
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: url3,
+      success: function(data) {
+        console.log(JSON.stringify(data));
+        var mlypos = data.ims[0]["key"]
+        console.log(mlypos);
+        var mlon = data.ims[0].lon;
+        var mlat = data.ims[0].lat;
+        var markerSource = {
+                 type: 'geojson',
+                 data: {
+                     type: 'Feature',
+                     geometry: {
+                         type: 'Point',
+                         coordinates: [mlon, mlat]
+                     },
+                     properties: {
+                         title: 'You\'re here!',
+                         'marker-symbol': 'marker'
+                     }
+                 }
+             };
+        map.addSource('markers', markerSource)
+        map.addLayer({
+                      id: 'markers',
+                      type: 'symbol',
+                      source: 'markers',
+                      });
+        map.flyTo({
+            center: [mlon, mlat],
+            zoom: 15,
+        });
+        var mly = new Mapillary.Viewer('mly',
+          'UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh',  // ClientID for user chrisbeddow
+          mlypos, {cover: true, cache: false, direction: true});
+      }
+});
+
 });
 </script>
 
