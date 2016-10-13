@@ -51,6 +51,7 @@ $(document).ready( function() {
 
   console.log(userjson);
   var array = [];
+  var array2 = [];
   $.ajax({
           type: "get",
           dataType: "json",
@@ -75,7 +76,9 @@ $(document).ready( function() {
                 }
                 });
         $('#indiv').append('<tr><td>' + user + '</td><td>' + len + '</td><td>' + team + '</td></tr>');
-        array.push(team);
+
+        array2.push({team, len});
+
 
     }
 
@@ -84,10 +87,21 @@ $(document).ready( function() {
   }
   });
   teams = array.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-  console.log(JSON.stringify(teams));
-  for (x = 0; x < teams.length; x++) {
-    $('#teams').append('<tr><td>' + teams[x] + '</td><td>' + 0 + '</td></tr>');
-  }
+  let objArr = array2
+  let counts = objArr.reduce((prev, curr) => {
+    let count = prev.get(curr.team) || 0;
+    prev.set(curr.team, curr.len + count);
+    return prev;
+  }, new Map());
+  let scores = [...counts].map(([team, len]) => {
+  return {team, len}
+  })
+  console.log(JSON.stringify(scores));
+
+  for (x = 0; x < scores.length; x++) {
+    $('#teams').append('<tr><td>' + scores[x].team + '</td><td>' + scores[x].len + '</td></tr>');
+  };
+
   });
 
 
