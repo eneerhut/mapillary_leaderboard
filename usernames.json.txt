@@ -1,0 +1,12 @@
+{"usernames":[
+    {"user":"nuts2001", "team":"Berea"},
+    {"user":"tcmofolo", "team":"Berea"},
+    {"user":"fifiQn", "team":"Qacha's Nek"},
+    {"user":"Montshyqn", "team":"Qacha's Nek"},
+    {"user":"stanleymakhanya", "team":"Qacha's Nek"},
+    {"user":"nickyqn", "team":"Berea"},
+    {"user":"kupie", "team":"Mohale's Hoek"},
+    {"user":"boocha34", "team":"Maseru City"},
+    {"user":"Lineo", "team":"Maseru District"},
+    {"user":"mpaleng", "team":"Mohale's Hoek"},
+]}
