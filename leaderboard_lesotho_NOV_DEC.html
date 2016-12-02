@@ -52,7 +52,7 @@ div {
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 $(document).ready( function() {
-  var userjson = "https://raw.githubusercontent.com/eneerhut/mapillary_leaderboard/blob/master/usernames.json";
+  var userjson = "https://raw.githubusercontent.com/eneerhut/mapillary_leaderboard/master/usernames.json";
 
   console.log(userjson);
   var array = [];
@@ -68,7 +68,7 @@ $(document).ready( function() {
                 var user = data.usernames[u]["user"];
                 var team = data.usernames[u]["team"];
                 console.log(user, team);
-                var url = "https://a.mapillary.com/v2/search/im?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&max_lat=-28.57004987964739&max_lon=29.443359375&min_lat=-30.699335004371967&min_lon=27.0648193359375&limit=10000000&user=" + user + "&start_time=" + 1479081600 + "&end_time=" + 1483142400
+                var url = "https://a.mapillary.com/v2/search/im?client_id=UTZhSnNFdGpxSEFFREUwb01GYzlXZzpkMWM2YzdjYjQxN2FhM2Vh&max_lat=-28.57004987964739&max_lon=29.443359375&min_lat=-30.699335004371967&min_lon=27.0648193359375&limit=10000000&user=" + user + "&start_time=" + 1479081600000 + "&end_time=" + 1483228799000
                 var len;
                 $.ajax({
                   type: "get",
